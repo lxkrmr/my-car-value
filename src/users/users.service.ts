@@ -8,6 +8,7 @@ export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   create(email: string, password: string) {
+    // the 'create' method creates a UserEntity and ensures that this entity is valid (based on optional validation annotations)
     const user = this.repo.create({
       email,
       password,
