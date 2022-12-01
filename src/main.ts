@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
+      whitelist: true, // ensures that additional fields are ignored, only specified fields will be considered
     }),
   );
   await app.listen(3000);
