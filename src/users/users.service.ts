@@ -9,6 +9,7 @@ export class UsersService {
 
   create(email: string, password: string) {
     // the 'create' method creates a UserEntity and ensures that this entity is valid (based on optional validation annotations)
+    // hooks like @AfterInsert etc. will only be triggered if we ensure the usage of an UserEntity.
     const user = this.repo.create({
       email,
       password,
