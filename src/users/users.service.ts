@@ -32,10 +32,8 @@ export class UsersService {
     // con: two DB requests are needed for updating a customer
     // alternative: the *.update() method can be called 'directly', but won't trigger the hooks.
     const user = await this.findOne(id);
-
     if (!user) {
-      // TODO: check if there is a more specific exception / error provided by NestJs
-      throw new Error('user not found');
+      return null;
     }
 
     // TODO: do we really want to mutate the existing object?
@@ -46,10 +44,8 @@ export class UsersService {
 
   async remove(id: number) {
     const user = await this.findOne(id);
-
     if (!user) {
-      // TODO: check if there is a more specific exception / error provided by NestJs
-      throw new Error('user not found');
+      return null;
     }
 
     return this.repo.remove(user);
