@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -22,8 +23,12 @@ export class UsersController {
   }
 
   @Get('/:id')
-  findUser(@Param('id') id: string) {
-    return this.userService.findOne(parseInt(id));
+  async findUser(@Param('id') id: string) {
+    const user = await this.userService.findOne(parseInt(id));
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException(`User [id: ${id}] not found.`);
   }
 
   @Get()
@@ -32,12 +37,20 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.userService.update(parseInt(id), body);
+  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
+    const user = await this.userService.update(parseInt(id), body);
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException(`User [id: ${id}] not found.`);
   }
 
   @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.userService.remove(parseInt(id));
+  async removeUser(@Param('id') id: string) {
+    const user = await this.userService.remove(parseInt(id));
+    if (user) {
+      return user;
+    }
+    throw new NotFoundException(`User [id: ${id}] not found.`);
   }
 }
