@@ -8,15 +8,14 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
-import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 
-@UseInterceptors(new SerializeInterceptor(UserDto))
+@Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
   constructor(private userService: UsersService) {}
