@@ -7,6 +7,15 @@ Content-Type: application/json
   "password": "password123"
 }
 
+### Signin a user
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "salt@hash.com",
+  "password": "password123"
+}
+
 ### Find all users
 GET http://localhost:3000/auth
 
