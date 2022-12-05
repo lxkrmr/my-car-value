@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "spam@eggs.com",
+  "email": "salt@hash.com",
   "password": "password123"
 }
 
@@ -17,7 +17,7 @@ GET http://localhost:3000/auth?email=spam@eggs.com
 GET http://localhost:3000/auth/2
 
 ### Delete user by id
-DELETE http://localhost:3000/auth/5
+DELETE http://localhost:3000/auth/4
 
 ### Update user with id
 PATCH http://localhost:3000/auth/5
