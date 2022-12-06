@@ -7,7 +7,7 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### Signin a user
+### Sign in a user
 POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
@@ -15,6 +15,9 @@ Content-Type: application/json
   "email": "salt@hash.com",
   "password": "password123"
 }
+
+### Sign out a user
+POST http://localhost:3000/auth/signout
 
 ### Who am I
 GET http://localhost:3000/auth/whoami
