@@ -77,4 +77,20 @@ describe('AuthService', () => {
       NotFoundException,
     );
   });
+
+  it('throws if an invalid password is provided', async () => {
+    // given
+    const email = '<email>';
+    const wrongPassword = '<wrong-password>';
+    fakeUserService.find = (email: string) => {
+      return Promise.resolve([
+        { id: 1, email, password: '<salt.hash>' } as User,
+      ]);
+    };
+
+    // when, then
+    await expect(service.signin(email, wrongPassword)).rejects.toThrow(
+      NotFoundException,
+    );
+  });
 });
