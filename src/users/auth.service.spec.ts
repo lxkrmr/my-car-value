@@ -10,10 +10,17 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     // create a fake copy of the users service
+    const users: User[] = [];
     fakeUserService = {
-      find: (email: string) => Promise.resolve([]),
-      create: (email: string, password: string) =>
-        Promise.resolve({ id: 1, email, password } as User),
+      find: (email: string) => {
+        const filteredUsers = users.filter((user) => user.email === email);
+        return Promise.resolve(filteredUsers);
+      },
+      create: (email: string, password: string) => {
+        const user = { id: users.length, email, password } as User;
+        users.push(user);
+        return Promise.resolve(user);
+      },
     };
     const module = await Test.createTestingModule({
       providers: [
@@ -50,13 +57,11 @@ describe('AuthService', () => {
     expect(result.email).toStrictEqual(email);
   });
 
-  it('throws an error if user signs up with email that is in use', async () => {
+  it('user can not sign up with known email', async () => {
     // given
     const email = '<email>';
     const password = '<password>';
-    fakeUserService.find = (email: string) => {
-      return Promise.resolve([{ id: 1, email, password } as User]);
-    };
+    await service.signup(email, password);
 
     // when, then
     await expect(service.signup(email, password)).rejects.toThrow(
@@ -64,29 +69,23 @@ describe('AuthService', () => {
     );
   });
 
-  it('throws of signin is called with an unsued email', async () => {
+  it('user can not sigin with unknown email', async () => {
     // given
-    const email = '<email>';
+    const unknownEmail = '<unknown-email>';
     const password = '<password>';
-    fakeUserService.find = (email: string) => {
-      return Promise.resolve([]);
-    };
 
     // when, then
-    await expect(service.signin(email, password)).rejects.toThrow(
+    await expect(service.signin(unknownEmail, password)).rejects.toThrow(
       NotFoundException,
     );
   });
 
-  it('throws if an invalid password is provided', async () => {
+  it('user can not signin with wrong password', async () => {
     // given
     const email = '<email>';
+    const password = '<password>';
     const wrongPassword = '<wrong-password>';
-    fakeUserService.find = (email: string) => {
-      return Promise.resolve([
-        { id: 1, email, password: '<salt.hash>' } as User,
-      ]);
-    };
+    await service.signup(email, password);
 
     // when, then
     await expect(service.signin(email, wrongPassword)).rejects.toThrow(
@@ -94,19 +93,16 @@ describe('AuthService', () => {
     );
   });
 
-  it('returns a user if correct password is provided', async () => {
+  it('user can sigin', async () => {
     // given
     const email = '<email>';
     const password = '<password>';
     const user = await service.signup(email, password);
-    fakeUserService.find = (email) => {
-      return Promise.resolve([user]);
-    };
 
     // when
     const result = await service.signin(email, password);
 
     // then
-    expect(result.email).toStrictEqual(email);
+    expect(result).toStrictEqual(user);
   });
 });
