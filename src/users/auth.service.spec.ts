@@ -93,4 +93,20 @@ describe('AuthService', () => {
       NotFoundException,
     );
   });
+
+  it('returns a user if correct password is provided', async () => {
+    // given
+    const email = '<email>';
+    const password = '<password>';
+    const user = await service.signup(email, password);
+    fakeUserService.find = (email) => {
+      return Promise.resolve([user]);
+    };
+
+    // when
+    const result = await service.signin(email, password);
+
+    // then
+    expect(result.email).toStrictEqual(email);
+  });
 });
