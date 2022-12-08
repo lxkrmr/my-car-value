@@ -32,7 +32,7 @@ GET http://localhost:3000/auth?email=spam@eggs.com
 GET http://localhost:3000/auth/2
 
 ### Delete user by id
-DELETE http://localhost:3000/auth/4
+DELETE http://localhost:3000/auth/1
 
 ### Update user with id
 PATCH http://localhost:3000/auth/5
